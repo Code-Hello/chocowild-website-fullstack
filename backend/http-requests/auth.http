@@ -3,8 +3,8 @@ POST http://localhost:8000/api/signin
 Content-Type: application/json
 
 {
-    "email": "abc@mail.com",
-    "password": "abpassword"
+    "email": "abcd@mail.com",
+    "password": "abcdpassword"
 }
 
 ### POST SIGNUP
@@ -12,13 +12,13 @@ POST http://localhost:8000/api/signup
 Content-Type: application/json
 
 {
-    "firstname": "abc",
-    "lastname": "abc",
-    "street": "abc",
-    "city": "abc",
+    "firstname": "abcd",
+    "lastname": "abcd",
+    "street": "abcd",
+    "city": "abcd",
     "postal_code": "2",
-    "email": "abc@mail.com",
-    "password": "abcpassword",
+    "email": "abcd@mail.com",
+    "password": "abcdpassword",
     "phone_number": "xxx",
     "role": "user"
 }

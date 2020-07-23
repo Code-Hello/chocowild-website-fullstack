@@ -1,5 +1,12 @@
 import React from "react";
 
+import { connect } from "react-redux";
+import {
+  addProductToState,
+  deleteProductFromState,
+} from "../actions/chosenProductsActions";
+
+import { ToastContainer, toast } from "react-toastify";
 import styled from "styled-components";
 
 import { FlexDiv } from "../styles/containers";
@@ -47,7 +54,14 @@ const Price = styled(TextParagraph)`
 
 const WrapperButtonProduct = styled.div``;
 
-const ProductItem = ({ name, price, image, category }) => {
+const ProductItem = (props) => {
+  const { id, name, price, image, category } = props;
+
+  const addProduct = () => {
+    props.addProductToState(id, name, price, 1);
+    toast.success(`Rajouté au panier avec succès !`, {});
+  };
+
   return (
     <>
       <ProductWrapper column>
@@ -62,14 +76,48 @@ const ProductItem = ({ name, price, image, category }) => {
           <TextParagraph>{category}</TextParagraph>
           <Price>{price}€</Price>
           <WrapperButtonProduct>
-            <Button buttonType="submit" coffee greyBg hoverCoffee>
+            <Button
+              buttonType="submit"
+              coffee
+              greyBg
+              hoverCoffee
+              functionToClick={addProduct}
+            >
               Ajouter au panier
             </Button>
           </WrapperButtonProduct>
         </ProductDivContent>
       </ProductWrapper>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </>
   );
 };
 
-export default ProductItem;
+const mapStateToProps = (state) => {
+  return {
+    chosenProducts: state.chosenProducts,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addProductToState: (idProduct, nameProduct, priceProduct, quantity) =>
+      dispatch(
+        addProductToState(idProduct, nameProduct, priceProduct, quantity)
+      ),
+    deleteProductFromState: (idProduct) =>
+      dispatch(deleteProductFromState(idProduct)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductItem);

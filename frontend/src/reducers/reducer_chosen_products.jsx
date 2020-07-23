@@ -8,6 +8,8 @@ const chosenProductsReducer = (state = initState, action) => {
         {
           idProduct: action.idProduct,
           nameProduct: action.nameProduct,
+          priceProduct: action.priceProduct,
+          quantity: action.quantity,
         },
       ];
     case "DELETE_PRODUCT":

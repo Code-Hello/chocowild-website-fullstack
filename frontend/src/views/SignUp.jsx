@@ -10,21 +10,18 @@ import Button from "../components/Button";
 import Form from "../components/Form";
 import Input from "../components/Input";
 
-const WrapperForm = styled.div`
-  padding: 2rem;
-  border: ${(props) => props.borderRight && '2px solid "#3a3835"'};
-`;
-
 const SignUp = (props) => {
   const [datas, setDatas] = useState({
+    firstname: "",
+    lastname: "",
+    street: "",
+    city: "",
+    postal_code: "",
     email: "",
     password: "",
-    passwordCheck: "",
+    phone_number: "",
+    role: "",
   });
-  const [isPasswordOk, setIsPasswordOk] = useState(false);
-
-  const checkPasswordStandard = (pass) =>
-    pass.length >= 8 ? setIsPasswordOk(true) : setIsPasswordOk(false);
 
   const handleChange = (e) => {
     setDatas({
@@ -35,8 +32,16 @@ const SignUp = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    checkPasswordStandard(datas.password);
-    if (!datas.email || !datas.password || !datas.passwordCheck ||) {
+    if (
+      !datas.email ||
+      !datas.password ||
+      !datas.passwordCheck ||
+      !datas.firstname ||
+      !datas.lastname ||
+      !datas.street ||
+      !datas.city ||
+      !datas.postal_code
+    ) {
       toast.warn(`Tous les champs doivent être renseignés...`, {
         position: "top-center",
         autoClose: 5000,
@@ -46,7 +51,7 @@ const SignUp = (props) => {
         draggable: true,
         progress: undefined,
       });
-    } else if (!isPasswordOk) {
+    } else if (datas.password.length < 8) {
       toast.error(
         "Le mot de passe doit comporter 8 caractères au minimum...",
         {}
@@ -55,13 +60,18 @@ const SignUp = (props) => {
       toast.error("Les mots de passe doivent correspondre", {});
     } else {
       try {
-        await Axios.post("http://localhost:8000/api/users", {
-          ...datas,
+        await Axios.post("http://localhost:8000/api/signup", {
+          firstname: datas.firstname,
+          lastname: datas.lastname,
+          street: datas.street,
+          city: datas.city,
+          postal_code: datas.postal_code,
+          email: datas.email,
+          password: datas.password,
+          phone_number: datas.phone_number,
+          role: "user",
         });
-        setTimeout(() => {
-          props.history.push("/");
-        }, 2500);
-        toast.success(`Rajouté avec succès !`, {});
+        toast.success(`Enregistré avec succès !`, {});
       } catch (error) {
         toast.error(`Erreur lors de l'ajout : ${error.message}`, {});
       }
@@ -71,7 +81,7 @@ const SignUp = (props) => {
   return (
     <>
       <TitlePage>S'enregistrer</TitlePage>
-      <Form submitFuncToPass={handleSubmit}>
+      <Form submitFunc={handleSubmit}>
         <Input
           labelText="Lastname"
           inputType="text"

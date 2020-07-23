@@ -20,6 +20,7 @@ passport.use(
             session: false,
         },
         function(email, password, done) {
+            console.log('Hi')
             connection.query("SELECT * FROM user WHERE email = ?", email, function(
                 err,
                 user
@@ -27,8 +28,8 @@ passport.use(
                 if (err) {
                     return done(err);
                 }
-                if (!user || !validatePassword(user, password)) {
-                    return done(null, false, { errors: "Incorrect email ou password." });
+                if (!user || user.length <= 0 || !validatePassword(user, password)) {
+                    return done(null, false, { error: "Incorrect email ou password." });
                 }
                 return done(null, user);
             });
@@ -50,11 +51,7 @@ const userValidationModificationMdp = [
 ];
 
 const validatePassword = (user, password) => {
-    const hashedPassword = bcrypt.hashSync(password, hash);
-    if (user.password === hashedPassword) {
-        return true;
-    }
-    return false;
+    return bcrypt.compareSync(password, user[0].password);
 };
 
 router.post(
@@ -73,6 +70,8 @@ router.post("/signup", userValidationInscription, (req, res) => {
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
     }
+
+    console.log(req.body);
 
     let userData = req.body;
     userData.password = bcrypt.hashSync(userData.password, hash);

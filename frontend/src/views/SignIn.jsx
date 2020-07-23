@@ -39,21 +39,6 @@ const WrapperForm = styled.div`
 const SignIn = (props) => {
   const [datas, setDatas] = useState({});
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await Axios.post("", {
-        ...datas,
-      });
-      setTimeout(() => {
-        props.history.push("/");
-      }, 1500);
-      toast.success(`${datas.email} est Loggé`, {});
-    } catch (err) {
-      toast.error(`${err.message}`, {});
-    }
-  };
-
   const handleChange = (e) => {
     setDatas({
       ...datas,
@@ -61,12 +46,25 @@ const SignIn = (props) => {
     });
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await Axios.post("http://localhost:8000/api/signin", {
+        email: datas.email,
+        password: datas.password,
+      });
+      toast.success(`Connecté !`, {});
+    } catch (err) {
+      toast.error(`${err.message}`, {});
+    }
+  };
+
   return (
     <>
       <TitlePage>Connectez-vous</TitlePage>
       <ContainerSign center>
         <WrapperForm borderRight borderBottom>
-          <Form submitFuncToPass={handleSubmit}>
+          <Form submitFunc={handleSubmit}>
             <TextParagraph grey>Se connecter</TextParagraph>
             <Input
               labelText="Email"

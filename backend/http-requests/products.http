@@ -9,9 +9,9 @@ POST http://localhost:8000/api/products
 Content-Type: application/json
 
 {
-    "name": "test",
-    "description": "xxxxx",
-    "price": "5",
+    "name": "Tablette chocolat au lait",
+    "description": "Chocolat au lait",
+    "price": "8.95",
     "stock_quantity": "15",
     "id_category": "1"
 }
@@ -25,4 +25,4 @@ Content-Type: application/json
 }
 
 ###DELETE
-DELETE http://localhost:8000/api/products/2
+DELETE http://localhost:8000/api/products/3

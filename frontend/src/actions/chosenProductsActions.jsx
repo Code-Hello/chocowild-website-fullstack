@@ -1,8 +1,15 @@
-export const addProductToState = (idProduct, nameProduct) => {
+export const addProductToState = (
+  idProduct,
+  nameProduct,
+  priceProduct,
+  quantity
+) => {
   return {
     type: "ADD_PRODUCT",
     idProduct,
     nameProduct,
+    priceProduct,
+    quantity,
   };
 };
 

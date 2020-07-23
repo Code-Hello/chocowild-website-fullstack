@@ -30,7 +30,6 @@ const Button = ({
   coffee,
   greyBg,
   coffeeBg,
-  disabled,
   functionToClick,
   hoverGreyBg,
   hoverCoffeeBg,
@@ -42,7 +41,6 @@ const Button = ({
       coffeeBg={coffeeBg}
       grey={grey}
       coffee={coffee}
-      disabled={disabled}
       hoverGreyBg={hoverGreyBg}
       hoverCoffeeBg={hoverCoffeeBg}
       onClick={functionToClick}

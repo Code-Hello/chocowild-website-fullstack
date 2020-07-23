@@ -14,22 +14,24 @@ const WrapperSection = styled.section`
   margin: 1rem 0;
 `;
 
+const DivSelect = styled.div`
+  margin: 1rem 0;
+
+  select {
+    width: 100%;
+  }
+`;
+
 const Admin = () => {
   const [categories, setCategories] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const [datasToAddProduct, setDatasToAddProduct] = useState({
-    name: "",
-    description: "",
-    price: "",
-    image: "",
-    stock_quantity: "",
-    id_category: "",
-  });
+  const [datasToAddProduct, setDatasToAddProduct] = useState({});
 
-  const [datasToAddCategory, setDatasToAddCategory] = useState({
-    name: "",
-  });
+  const [datasToAddCategory, setDatasToAddCategory] = useState({});
 
+  //add a product
   const handleChangeAddProduct = (e) => {
     setDatasToAddProduct({
       ...datasToAddProduct,
@@ -57,15 +59,22 @@ const Admin = () => {
     } else {
       try {
         await Axios.post("http://localhost:8000/api/products", {
-          ...datasToAddProduct,
+          name: datasToAddProduct.name,
+          description: datasToAddProduct.description,
+          price: datasToAddProduct.price,
+          stock_quantity: datasToAddProduct.stock_quantity,
+          id_category: datasToAddProduct.id_category,
         });
-        toast.success(`Rajouté avec succès !`, {});
+        toast.success(`Produit rajoutée avec succès !`, {});
       } catch (error) {
         toast.error(`Erreur lors de l'ajout : ${error.message}`, {});
       }
     }
   };
 
+  //delete a product
+
+  //add a category
   const handleChangeAddCategory = (e) => {
     setDatasToAddCategory({
       ...datasToAddCategory,
@@ -88,22 +97,47 @@ const Admin = () => {
     } else {
       try {
         await Axios.post("http://localhost:8000/api/categories", {
-          ...datasToAddCategory,
+          name: datasToAddCategory.name,
         });
-        toast.success(`Rajouté avec succès !`, {});
+        toast.success(`Catégorie rajoutée avec succès !`, {});
       } catch (error) {
         toast.error(`Erreur lors de l'ajout : ${error.message}`, {});
       }
     }
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const getCategories = async () => {
+      try {
+        const { data } = await Axios.get(
+          `http://localhost:8000/api/categories`,
+          {
+            headers: { Accept: "application/json" },
+          }
+        );
+        setCategories(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    getCategories();
+  }, [categories]);
+
+  if (isLoading) {
+    return <div>Is loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error !</div>;
+  }
 
   return (
     <>
       <FlexDiv column>
         <WrapperSection>
-          <Form submitFuncToPass={handleSubmitAddProduct}>
+          <Form submitFunc={handleSubmitAddProduct}>
             <TextParagraph grey>Ajouter un produit</TextParagraph>
             <Input
               labelText="Nom du produit"
@@ -148,18 +182,24 @@ const Admin = () => {
               value={datasToAddProduct.stock_quantity}
               onChangeFunc={handleChangeAddProduct}
             />
-            <select name="" id="">
-              {categories.map((category) => (
-                <option value={category.id}>{category.name}</option>
-              ))}
-            </select>
+            <DivSelect>
+              <select
+                name="id_category"
+                id="id_category"
+                onChange={handleChangeAddProduct}
+              >
+                {categories.map((category) => (
+                  <option value={category.id}>{category.name}</option>
+                ))}
+              </select>
+            </DivSelect>
             <Button buttonType="submit" greyBg hoverCoffee>
               Ajouter le produit
             </Button>
           </Form>
         </WrapperSection>
         <WrapperSection>
-          <Form submitFuncToPass={handleSubmitAddCategory}>
+          <Form submitFunc={handleSubmitAddCategory}>
             <TextParagraph grey>
               Ajouter une catégorie de produits
             </TextParagraph>
@@ -177,6 +217,17 @@ const Admin = () => {
           </Form>
         </WrapperSection>
       </FlexDiv>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </>
   );
 };

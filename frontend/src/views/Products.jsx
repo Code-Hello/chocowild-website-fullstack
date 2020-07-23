@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
 
+import { connect } from "react-redux";
+import {
+  addProductToState,
+  deleteProductFromState,
+} from "../actions/chosenProductsActions";
+
 import styled from "styled-components";
 
 import { FlexDiv } from "../styles/containers";
@@ -24,6 +30,7 @@ const ContainerProductsList = styled(FlexDiv)`
 
 const Products = (props) => {
   const [allProducts, setAllProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -34,6 +41,14 @@ const Products = (props) => {
           headers: { Accept: "application/json" },
         });
         setAllProducts(data);
+
+        const response = await Axios.get(
+          `http://localhost:8000/api/categories`,
+          {
+            headers: { Accept: "application/json" },
+          }
+        );
+        setCategories(response.data);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -54,11 +69,12 @@ const Products = (props) => {
   return (
     <>
       <FlexDiv column>
-        <TitleProducts>Hi</TitleProducts>
+        <TitleProducts>Les produits</TitleProducts>
         <ContainerProductsList column evenly>
           {allProducts.map((product) => (
             <ProductItem
               key={product.id}
+              id={product.id}
               name={product.name}
               price={product.price}
               image={product.image}
