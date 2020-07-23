@@ -1,0 +1,33 @@
+### GET ALL USERS
+GET http://localhost:8000/api/users
+
+### GET A USER
+GET http://localhost:8000/api/users/1
+
+### POST A USER
+POST http://localhost:8000/api/users
+Content-Type: application/json
+
+{
+    "firstname": "abab",
+    "lastname": "abab",
+    "street": "ab",
+    "city": "ab",
+    "postal_code": "1",
+    "email": "abab@mail.com",
+    "password": "abpassword",
+    "phone_number": "xxx",
+    "role": "user"
+}
+
+### PUT
+PUT http://localhost:8000/api/users/1
+Content-Type: application/json
+
+{
+    "email": "abab@mail.com",
+    "password": "ababpassword"
+}
+
+###DELETE
+DELETE http://localhost:8000/api/users/1

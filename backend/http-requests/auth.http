@@ -1,0 +1,24 @@
+### POST SIGNIN 
+POST http://localhost:8000/api/signin
+Content-Type: application/json
+
+{
+    "email": "abc@mail.com",
+    "password": "abpassword"
+}
+
+### POST SIGNUP
+POST http://localhost:8000/api/signup
+Content-Type: application/json
+
+{
+    "firstname": "abc",
+    "lastname": "abc",
+    "street": "abc",
+    "city": "abc",
+    "postal_code": "2",
+    "email": "abc@mail.com",
+    "password": "abcpassword",
+    "phone_number": "xxx",
+    "role": "user"
+}
