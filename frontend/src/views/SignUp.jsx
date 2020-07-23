@@ -36,7 +36,7 @@ const SignUp = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     checkPasswordStandard(datas.password);
-    if (!datas.email || !datas.password || !datas.passwordCheck ||) {
+    if (!datas.email || !datas.password || !datas.passwordCheck) {
       toast.warn(`Tous les champs doivent être renseignés...`, {
         position: "top-center",
         autoClose: 5000,
