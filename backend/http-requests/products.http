@@ -1,0 +1,28 @@
+### GET ALL PRODUCTS
+GET http://localhost:8000/api/products
+
+### GET A PRODUCT
+GET http://localhost:8000/api/products/1
+
+### POST A PRODUCT
+POST http://localhost:8000/api/products
+Content-Type: application/json
+
+{
+    "name": "Tablette chocolat au lait",
+    "description": "Chocolat au lait",
+    "price": "8.95",
+    "stock_quantity": "15",
+    "id_category": "1"
+}
+
+### PUT
+PUT http://localhost:8000/api/products/2
+Content-Type: application/json
+
+{
+    "price": "10"
+}
+
+###DELETE
+DELETE http://localhost:8000/api/products/3
